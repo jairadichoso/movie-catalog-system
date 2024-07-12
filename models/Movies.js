@@ -3,36 +3,36 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: [true, 'User ID is required']
+        required: [true, 'userId is required']
     },
     comment: {
         type: String,
-        required: [true, 'Comment is required']
+        required: [true, 'comment is required']
     },
-});
+})
 
 const movieSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Movie Name is required']
+		required: [true, 'Title is required']
     },
     director: {
         type: String,
-        required: [true, 'Movie Director is required']
+		required: [true, 'Director is required']
     },
     year: {
         type: Number,
-        required: [true, 'Movie Year is required']
+		required: [true, 'year is required']
     },
     description: {
         type: String,
-        required: [true, 'Movie Description is required']
+		required: [true, 'Description is required']
     },
     genre: {
         type: String,
-        required: [true, 'Genre Description is required']
+		required: [true, 'genre is required']
     },
     comments: [commentSchema]
-});
+})
 
 module.exports = mongoose.model('Movie', movieSchema);

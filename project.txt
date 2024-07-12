@@ -1,0 +1,81 @@
+Objective: ExpressJS API - Inventory Management System
+
+1. What is the main objective of the project?
+	- ExpressJS API - Movie Catalog System with Simple CRUD functionalities
+
+2. Who are the target users of the application?
+	- Movie audience
+
+3. What are the core features or functionalities required?
+
+	- Basic CRUD operations for managing movie items (Create, Read, Update, Delete).
+		- Authenticated user ability to retrieve a list of all movies.
+        - Authenticated user ability to retrieve a specific movie.
+		- Authenticated user ability to add a new movie.
+		- Authenticated user to update an existing movie.
+		- Authenticated user to delete a movie.
+    - Comment functionalities
+        - Authenticated user ability to add a comments.
+        - Authenticated user ability to get all comment
+
+4. What data will the application need to store and manage?
+
+	- Movie
+		- title
+		- director
+        - year
+		- description
+		- genre
+        - comments
+
+	- User information 
+		- name
+        - email
+		- password
+
+5. Are there any specific technical requirements or constraints?
+
+	- Express.js API.
+	- MongoDB with Mongoose for data storage and management.
+	- RESTful Architecture.
+
+6. What are the security and authentication requirements?
+
+	- Token-based Authentication (JWT).
+	- Brcypt hash
+
+7. What are your routes and controllers?
+
+	Routes:
+
+	User
+
+	POST /users/login - User login route.
+	POST /users/register - User registration route.
+
+	Movie Routes:
+
+	POST /addMovie/ - Add a new movie.
+    GET /getMovies/ - Retrieve a list of all movies.
+	GET /getMovie/:id - Retrieve a specific movie item by its ID.
+	PATCH /updateMovie/:id - Update an existing movie by its ID.
+	DELETE /deleteMovie/:id - Delete movie by its ID.
+    PATCH /addComment/:id - Add a comment to a movie by its ID
+    GET /getComments/:id - get all comments from a movie by its ID
+
+	Controllers:
+
+	User Controller:
+
+	loginUser
+	registerUser
+
+	Movie Controller:
+
+	addMovie
+	getMovies
+	getMovie
+	updateMovie
+	deleteMovie
+    addComment
+    getComments

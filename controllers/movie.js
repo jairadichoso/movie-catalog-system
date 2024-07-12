@@ -1,106 +1,100 @@
-const Movie = require('../models/Movie');
-const User = require('../models/User');
+const Movie = require('../models/Movies');
 
 module.exports.addMovie = async (req, res) => {
-    try {
-        const existingMovie = await Movie.findOne({ title: req.body.title });
+    const { title, director, year, description, genre } = req.body
+    
+    const movie = await Movie.findOne({ title });
+    if(movie) {
+        return res.status(409).send({ error: 'Movie already exists'}) 
+    }
 
-        if (existingMovie) {
-            return res.status(409).send({ error: 'Movie already exists' });
-        }
+    let newMovie = new Movie({
+        title,
+        director,
+        year,
+        description,
+        genre
+    })
 
-        let newMovie = new Movie({
-            title: req.body.title,
-            director: req.body.director,
-            year: req.body.year,
-            description: req.body.description,
-            genre: req.body.genre
-        });
-
+    try{
         const savedMovie = await newMovie.save();
         return res.status(201).send(savedMovie);
-    } catch (err) {
-        console.error('Error in adding the movie: ', err);
-
-        if (err.name === 'MongoError' && err.code === 11000) {
-            return res.status(409).send({ error: 'Movie already exists' });
-        }
-
-        return res.status(500).send({ error: 'Failed to save the movie' });
     }
-};
-
+    catch (err) {
+        console.log('Error in adding movie',err);
+        return res.status(500).send({ message: 'Error in adding movie'})
+    }
+}
 
 module.exports.getMovies = async (req, res) => {
-    try {
+    
+    try{
         const movies = await Movie.find({});
-        
-        if (movies.length > 0) {
-            return res.status(200).send({ movies: movies });
-        } else {
-            return res.status(200).send({ message: 'No movies found.' });
+        if(movies.length <= 0){
+            return res.status(404).send({ error: "No Movies Found" })
         }
-    } catch (findErr) {
-        console.error('Error in finding all movies: ', findErr);
-        return res.status(500).send({ error: 'Error finding movies.' });
+        return res.status(200).send({movies})
     }
-};
+    catch(err){
+        console.error('Error in getting Movies: ', err);
+        return errors.status(500).send({ error: 'Error in getting movies' })
+    }
+}
 
 module.exports.getMovie = async (req, res) => {
-    try {
+    try{
         const movie = await Movie.findById(req.params.movieId);
-        return res.status(200).send(movie);
-    } catch (err) {
-        return res.status(500).send(err);
+        if(!movie) {
+            return res.status(404).send({ error: "Movie not found" })
+        }
+        return res.status(200).send(movie)
     }
-};
+    catch(err){
+        console.error('Error in getting Movies: ', err);
+        return errors.status(500).send({ error: 'Error in getting movies' })
+    }
+}
 
 module.exports.updateMovie = async (req, res) => {
-    let movieId = req.params.movieId;
-
-    let updatedMovie = {
-        title: req.body.title,
-        director: req.body.director,
-        year: req.body.year,
-        description: req.body.description,
-        genre: req.body.genre
-    };
-
-    try {
-        let updateMovie = await Movie.findByIdAndUpdate(movieId, updatedMovie, { new: true });
-        
-        if (updateMovie) {
-            return res.status(200).send({
-                message: 'Movie updated successfully',
-                updatedMovie: updateMovie
-            });
-        } else {
-            return res.status(404).send({ error: 'Movie not found' });
-        }
-    } catch (updateErr) {
-        console.error('Error in updating the movie: ', updateErr);
-        return res.status(500).send({ error: 'Error in updating the movie' });
+    const movieId = req.params.movieId;
+    const { title, director, year, description, genre } = req.body
+    const newMovie = {
+        title,
+        director,
+        year,
+        description,
+        genre
     }
-};
+
+    try{
+        const updatedMovie = await Movie.findByIdAndUpdate(movieId, newMovie, {new :true});
+        if(updatedMovie){
+            return res.status(200).send({
+                message: "Movie updated successfully",
+                updatedMovie
+            })
+        }
+    }
+    catch(err) {
+        console.error('Error in updating Movie: ', err);
+        return res.status(500).send({ error: 'Error in updating the Movie'})
+    }
+}
 
 module.exports.deleteMovie = async (req, res) => {
-
-    let movieId = req.params.movieId;
-    
-	try {
+    const movieId = req.params.movieId;
+    try{
         const deletedMovie = await Movie.findByIdAndDelete(movieId);
-        if(!deletedMovie){
-            return res.status(404).send({ error: 'Movie not found'});
+        if(!deletedMovie) {
+            return res.status(404).send({ error: "Movie not found" })
         }
 
-        return res.status(200).send({ message: 'Movie deleted successfully'});
+        return res.status(200).send({ message: "Movie deleted successfully" })
     }
-
-    catch (err) {
-        console.log('Error in deleting movie: ', err);
-        return res.status(500).send({error : 'Error in deleting movie'});
+    catch(err) {
+        console.error('Error in deleting Movie: ', err);
+        return res.status(500).send({error:'Error in deleting movie'})
     }
-
 }
 
 module.exports.addComment = async (req, res) => {
