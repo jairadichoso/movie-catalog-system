@@ -9,14 +9,14 @@ Objective: ExpressJS API - Inventory Management System
 3. What are the core features or functionalities required?
 
 	- Basic CRUD operations for managing movie items (Create, Read, Update, Delete).
-		- Authenticated user ability to retrieve a list of all movies.
-        - Authenticated user ability to retrieve a specific movie.
-		- Authenticated user ability to add a new movie.
-		- Authenticated user to update an existing movie.
-		- Authenticated user to delete a movie.
+		- Authenticated user has ability to retrieve a list of all movies.
+        - Authenticated user has ability to retrieve a specific movie.
+		- Authenticated user has ability to add a new movie.
+		- Authenticated user has ability to update an existing movie.
+		- Authenticated user has ability to delete a movie.
     - Comment functionalities
-        - Authenticated user ability to add a comments.
-        - Authenticated user ability to get all comment
+        - Authenticated user has ability to add a comments.
+        - Authenticated user has ability to get all comment
 
 4. What data will the application need to store and manage?
 
